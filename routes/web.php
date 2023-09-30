@@ -14,3 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'App\Http\Controllers\QuestionsController@index');
+
+Route::resource('questions', 'App\Http\Controllers\QuestionsController')->except('edit', 'update');
