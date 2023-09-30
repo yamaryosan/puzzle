@@ -1,0 +1,14 @@
+.container {
+    display: flex;
+}
+
+.main {
+    flex: 70%;
+    background-color: aqua;
+    padding-right: 1rem;
+}
+
+.sidebar {
+    background-color: red;
+    flex: 30%;
+}
