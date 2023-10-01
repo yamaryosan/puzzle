@@ -135,7 +135,8 @@ class HintService
     }
 
     /**
-     * ヒントをアップロードしてDBに保存
+     * ヒントを保存
+     *
      * text_hint_n(nは自然数): ヒント本文
      * hint_images_n(nは自然数): ヒント画像
      *
@@ -160,5 +161,162 @@ class HintService
         foreach ($hintTexts as $index => $hintText) {
             $hint = $this->save($question, $hintText, $hintImages[$index] ?? []);
         }
+    }
+
+    /**
+     * 元々画像のなかったヒントを再作成
+     * @param Question $question
+     * @param array $hintIds
+     * @param array $texts
+     * @param array $images
+     * @return void
+     */
+    public function restoreHintsOriginallyNoImage(Question $question, array $hintIds, array $texts, array $images)
+    {
+        if (!isset($hintIds)) {
+            return;
+        }
+        # dd($hintIds, $texts, $images);
+        foreach ($hintIds as $hintIndex => $hintId) {
+            $hint = new Hint;
+            $hint->question_id = $question->id;
+            $hint->hint = $texts[$hintIndex];
+            $hint->save();
+            // 新規画像の保存
+            if (isset($images[$hintIndex])) {
+                $this->imageService->uploadForHint($hint, $images[$hintIndex]);
+            }
+        }
+    }
+
+    /**
+     * 元々画像のあったヒントの本文を更新し、画像を紐付ける
+     * @param Question $question
+     * @param array $hintIds
+     * @param array $texts
+     * @param array $imageIds
+     * @param array $images
+     * @return void
+     */
+    public function restoreHintsOriginallyWithImage(
+        Question $question,
+        array $hintIds,
+        array $texts,
+        array $imageIds,
+        array $images)
+    {
+        # dd($hintIds, $texts, $imageIds, $images);
+        if (empty($hintIds)) {
+            return;
+        }
+        $loopMax = max(count($imageIds[0]), count($images[0]));
+        foreach ($hintIds as $hintIndex => $hintId) {
+            $hint = new Hint;
+            $hint->question_id = $question->id;
+            $hint->hint = $texts[$hintIndex];
+            $hint->save();
+            // 新規画像の保存と既存画像の紐付け
+            for ($i = 0; $i<= $loopMax; $i++) {
+                // 新規画像の保存
+                if (isset($images[$hintIndex][$i])) {
+                    $this->imageService->uploadForHint($hint, $images[$hintIndex][$i]);
+                }
+                // 既存画像の紐付け
+                if (isset($imageIds[$hintIndex][$i])) {
+                    $this->imageService->reAttachForHint($hint, $imageIds[$hintIndex][$i]);
+                }
+            }
+        }
+    }
+
+    /**
+     * 一時的な既存画像なしヒントを連想配列として作成
+     */
+    public function prepareTempHintsOriginallyNoImage(array $form)
+    {
+        if (!isset($form['hint_ids_originally_no_image'])) {
+            return [];
+        }
+        $tempHints = [];
+        // 元々画像のなかったヒントのIDを取得
+        $hintIds = $this->getHintIdsFromForm($form, 'hint_ids_originally_no_image');
+        // 元々画像のなかったヒント文のフィールドとその値を取得
+        $hintTexts = $this->getTextFromForm($form, 'hint_text_originally_no_image');
+        // 元々画像のなかったヒントの画像群を取得
+        $hintImages = $this->getImagesFromForm($form, 'hint_images_originally_no_image');
+        // 元々画像のなかったヒントのフィールドとその値を連想配列に格納
+        foreach ($hintIds as $index => $hintId) {
+            $tempHints[$hintId] = [
+                'hint_text' => $hintTexts[$index],
+                'hint_images' => $hintImages[$index] ?? [], // 画像がない場合は空配列
+            ];
+        }
+        return $tempHints;
+    }
+
+    /**
+     * 一時的な既存画像ありヒントを連想配列として作成
+     */
+    public function prepareTempHintsOriginallyWithImage(array $form)
+    {
+        if (!isset($form['hint_ids_originally_with_image'])) {
+            return [];
+        }
+        $tempHints = [];
+        // 元々画像のあったヒントのIDを取得
+        $hintIds = $this->getHintIdsFromForm($form, 'hint_ids_originally_with_image');
+        // 元々画像のあったヒント文のフィールドとその値を取得
+        $hintTexts = $this->getTextFromForm($form, 'hint_text_originally_with_image');
+        // 元々画像のあったヒント画像群のフィールドとその値(ID)を取得
+        $hintImageIds = $this->getImageIdsFromForm($form, 'hint_image_ids_originally_with_image');
+        // 元々画像のあったヒントに追加された新規画像群のフィールドとその値を取得
+        $hintNewImages = $this->getImagesBetweenExistingImage($form, 'hint_new_images_originally_with_image');
+
+        // 元々画像のあったヒントのフィールドとその値を連想配列に格納
+        foreach ($hintIds as $hintIndex => $hintId) {
+            $tempHints[$hintId] = [
+                'hint_text' => $hintTexts[$hintIndex] ?? [],
+                'hint_image_ids' => $hintImageIds[$hintIndex] ?? [], // 画像がない場合は空配列
+                'hint_new_images' => $hintNewImages[$hintIndex] ?? [], // 画像がない場合は空配列
+            ];
+        }
+        return $tempHints;
+    }
+
+    /**
+     * ヒントを更新
+     * @param Question $question
+     * @param array $form
+     * @param string $questionId
+     */
+    public function update(Question $question, array $form, string $questionId)
+    {
+        DB::transaction(function () use ($question, $form, $questionId) {
+            // 一時的なヒントを連想配列として作成
+            $tempHintsOriginallyNoImage = $this->prepareTempHintsOriginallyNoImage($form);
+            $tempHintsOriginallyWithImage = $this->prepareTempHintsOriginallyWithImage($form);
+            // 既存のヒントをいったん全て削除
+            Hint::where('question_id', $questionId)->delete();
+
+            // 既存画像のなかったヒントの更新(再作成)
+            $this->restoreHintsOriginallyNoImage(
+                $question,
+                array_keys($tempHintsOriginallyNoImage),
+                array_column($tempHintsOriginallyNoImage, 'hint_text'),
+                array_column($tempHintsOriginallyNoImage, 'hint_images'),
+            );
+
+            // 既存画像のあったヒントの更新(再作成)
+            $this->restoreHintsOriginallyWithImage(
+                $question,
+                array_keys($tempHintsOriginallyWithImage),
+                array_column($tempHintsOriginallyWithImage, 'hint_text'),
+                array_column($tempHintsOriginallyWithImage, 'hint_image_ids'),
+                array_column($tempHintsOriginallyWithImage, 'hint_new_images'),
+            );
+
+            // 新規ヒントの保存
+            $this->store($question, $form);
+        });
     }
 }
