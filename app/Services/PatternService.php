@@ -47,4 +47,17 @@ class PatternService
         // 画像をDBに保存
         $this->imageService->uploadForPattern($pattern, $form['pattern_images'] ?? []);
     }
+
+    /**
+     * 問題にパターンを紐付ける
+     * @param Question $question
+     * @param array $pattern_ids
+     */
+    public function attach(Question $question, array $pattern_ids)
+    {
+        foreach($pattern_ids as $pattern_id) {
+            $pattern = Pattern::find($pattern_id);
+            $question->patterns()->attach($pattern->id);
+        }
+    }
 }
