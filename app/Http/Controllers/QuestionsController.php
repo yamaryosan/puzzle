@@ -114,7 +114,6 @@ class QuestionsController extends Controller
             'answers' => $answers,
         ];
         return view('questions.edit', $data);
-
     }
 
     /**
