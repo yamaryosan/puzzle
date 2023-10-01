@@ -80,6 +80,11 @@ class QuestionService
             $this->imageService->uploadForQuestion($question, $newImages);
         }
     }
+
+    /**
+     * storeメソッド用
+     * @param array $form
+     */
     public function store(array $form)
     {
         $question = new Question;
