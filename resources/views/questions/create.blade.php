@@ -13,11 +13,11 @@
     <!-- 問題文用画像セクション -->
     @include('partials.question_create.question_image_section')
     <!-- ジャンルセクション -->
-    @include('partials.question_create.genre_section', ['existing_genres' => $existing_genres])
+    @include('partials.question_create.genre_section')
     <!-- ヒントセクション -->
     @include('partials.question_create.hint_section')
     <!-- パターンセクション -->
-    @include('partials.question_create.pattern_section', ['patterns' => $patterns])
+    @include('partials.question_create.pattern_section')
     <!-- 正答セクション -->
     @include('partials.question_create.answer_section')
     <button type="submit">投稿</button>
