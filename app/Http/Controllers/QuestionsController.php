@@ -39,7 +39,25 @@ class QuestionsController extends Controller
      */
     public function show(string $id)
     {
+        // 表示に必要なデータを取得
+        $question = Question::find($id);
+        $questionImages = $question->images;
+        $genres = $question->genres;
+        $hints = Hint::where('question_id', $id)->with('images')->get();
+        $patterns = $question->patterns;
+        $answers = Answer::where('question_id', $id)->with('images')->get();
 
+        $data = [
+            'id' => $id,
+            'question' => $question,
+            'question_images' => $questionImages,
+            'genres' => $genres,
+            'hints' => $hints,
+            'patterns' => $patterns,
+            'answers' => $answers,
+        ];
+
+        return view('questions.show', $data);
     }
 
     /**
