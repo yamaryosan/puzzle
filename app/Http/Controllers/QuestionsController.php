@@ -37,8 +37,10 @@ class QuestionsController extends Controller
     /**
      * 問題作成処理用
      */
-    public function store()
+    public function store(Request $request)
     {
+        $form = $request->all();
+        unset($form['_token']);
         return redirect(route('questions.index'));
     }
 
