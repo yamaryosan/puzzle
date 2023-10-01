@@ -27,7 +27,11 @@ class QuestionsController extends Controller
      */
     public function create()
     {
-        return view('questions.create');
+        // 既存ジャンルを取得
+        $existingGenres = Genre::all();
+        // パターンを取得
+        $patterns = Pattern::all();
+        return view('questions.create', compact('existingGenres', 'patterns'));
     }
 
     /**
@@ -47,6 +51,7 @@ class QuestionsController extends Controller
         // 表示に必要なデータを取得
         $question = Question::find($id);
         $questionImages = $question->images;
+        dd($questionImages);
         $genres = $question->genres;
         $hints = Hint::where('question_id', $id)->with('images')->get();
         $patterns = $question->patterns;
