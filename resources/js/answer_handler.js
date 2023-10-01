@@ -27,7 +27,7 @@ function createDropArea(counter) {
     return dropArea;
 }
 
-// ヒント入力欄を追加
+// 正答入力欄を追加
 function addAnswerBlock(removedAnswerTexts, counter) {
     const container = document.getElementById('answer_container');
     const maxFields = 5;
