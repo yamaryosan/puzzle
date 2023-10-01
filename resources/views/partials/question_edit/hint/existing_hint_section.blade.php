@@ -25,7 +25,7 @@ $imageFormOrderLoop = 0; // 画像投稿フォームの順番を示す変数
             @endphp
             @include('partials.question_edit.common.insert_new_image_between_existing_images',
             ['field_name' => 'hint_new_images_originally_with_image',
-            'loop' => $HintLoop,
+            'loop' => $hintLoop,
             'imageFormOrderLoop' => $imageFormOrderLoop
             ])
             @php
@@ -39,7 +39,7 @@ $imageFormOrderLoop = 0; // 画像投稿フォームの順番を示す変数
                     <input type="hidden" name="hint_image_ids_originally_with_image[{{ $hintLoop }}][]" value="{{ $image->id }}">
                     @include('partials.question_edit.common.insert_new_image_between_existing_images',
                     ['field_name' => 'hint_new_images_originally_with_image',
-                    'loop' => $HintLoop,
+                    'loop' => $hintLoop,
                     'imageFormOrderLoop' => $imageFormOrderLoop])
                 </div>
                 @php
