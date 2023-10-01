@@ -13,7 +13,7 @@
     <!-- 問題文用画像セクション -->
     @include('partials.question_create.question_image_section')
     <!-- ジャンルセクション -->
-    @include('partials.question_create.genre_section')
+    @include('partials.question_create.genre_section', ['existingGenres' => $existingGenres])
     <!-- ヒントセクション -->
     @include('partials.question_create.hint_section')
     <!-- パターンセクション -->
