@@ -82,7 +82,7 @@ class QuestionService
     }
 
     /**
-     * storeメソッド用
+     * 問題を保存する
      * @param array $form
      */
     public function store(array $form)
@@ -105,7 +105,7 @@ class QuestionService
     }
 
     /**
-     * updateメソッド用
+     * 問題を更新する
      * @param Question $question
      * @param array $form
      * @param string $id
