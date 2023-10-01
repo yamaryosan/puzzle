@@ -12,7 +12,7 @@
                 <a href="{{ route('patterns.edit', $pattern->id) }}">編集</a>
                 <p>{{$pattern->content}}</p>
                 <!-- パターン削除ボタン -->
-                <form action="{{ route(patterns.destroy) }}" method="get" onsubmit="return confirm('本当に削除しますか？')">
+                <form action="{{ route('patterns.destroy', $pattern->id) }}" method="get" onsubmit="return confirm('本当に削除しますか？')">
                     @csrf
                     <input type="submit" value="削除">
                 </form>
