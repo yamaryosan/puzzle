@@ -1,7 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-
+<head>
+    <link rel="stylesheet" href="{{ asset('css/image_drop_form.css') }}">
+</head>
+<script>
+    // 以前の入力内容(ヒント、正答)を復元
+    const oldHints = @json(old('hints', []));
+    const oldAnswers = @json(old('answers', []));
+</script>
 <form action="{{route('questions.store')}}" method="post" enctype="multipart/form-data">
     @csrf
     <!-- エラーセクション -->
