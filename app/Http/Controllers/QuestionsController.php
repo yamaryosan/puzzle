@@ -119,10 +119,18 @@ class QuestionsController extends Controller
 
     /**
      * 問題編集処理用
+     * @param QuestionRequest $request
+     * @param string $id
      */
-    public function update(string $id)
+    public function update(QuestionRequest $request, string $id)
     {
+        $question = Question::find($id);
+        $form = $request->all();
+        unset($form['_token']);
+        $this->questionService->update($question, $form, $id);
 
+        // 各問題ページにリダイレクト
+        return redirect(route('questions.show', $id));
     }
 
     /**
