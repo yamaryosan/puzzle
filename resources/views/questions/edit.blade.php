@@ -31,3 +31,14 @@
     <button type="submit">投稿</button>
 </form>
 @endsection
+
+@vite([
+    'resources/js/genre_handler.js',
+    'resources/js/hint_recoverer.js',
+    'resources/js/answer_recoverer.js',
+    'resources/js/image_delete.js',
+    'resources/js/hint_delete.js',
+    'resources/js/answer_delete.js',
+    'resources/js/edit_page_hint_handler.js',
+    'resources/js/edit_page_answer_handler.js',
+    ])
