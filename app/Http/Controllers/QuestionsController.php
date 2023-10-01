@@ -16,9 +16,7 @@ use App\Services\QuestionService;
 
 class QuestionsController extends Controller
 {
-    public function __construct(
-        QuestionService $questionService
-    )
+    public function __construct(QuestionService $questionService)
     {
         $this->questionService = $questionService;
     }
@@ -87,6 +85,35 @@ class QuestionsController extends Controller
      */
     public function edit(string $id)
     {
+        // 問題文を取得
+        $question = Question::find($id);
+        // 問題文の画像を取得
+        $questionImages = $question->images;
+        // 既存既チェックジャンルを取得
+        $checkedGenres = $question->genres;
+        // 既存未チェックジャンルを取得
+        $remainedGenres = Genre::whereNotIn('id', $checkedGenres->pluck('id'))->get();
+        // ヒントを取得
+        $hints = Hint::where('question_id', $id)->get();
+        // 既チェックパターンを取得
+        $checkedPatterns = $question->patterns;
+        // 未チェックパターンを取得
+        $remainedPatterns = Pattern::whereNotIn('id', $checkedPatterns->pluck('id'))->get();
+        // 正答を取得
+        $answers = Answer::where('question_id', $id)->get();
+
+        $data = [
+            'id' => $id,
+            'question' => $question,
+            'question_images' => $questionImages,
+            'checked_genres' => $checkedGenres,
+            'remained_genres' => $remainedGenres,
+            'hints' => $hints,
+            'checked_patterns' => $checkedPatterns,
+            'remained_patterns' => $remainedPatterns,
+            'answers' => $answers,
+        ];
+        return view('questions.edit', $data);
 
     }
 
