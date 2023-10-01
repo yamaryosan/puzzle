@@ -16,3 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'App\Http\Controllers\QuestionsController@index');
 
 Route::resource('questions', 'App\Http\Controllers\QuestionsController')->except('edit', 'update');
+Route::get('/questions/create', 'App\Http\Controllers\QuestionsController@create')->name('questions.create');
+Route::post('/questions/store', 'App\Http\Controllers\QuestionsController@store')->name('questions.store');
+Route::get('/questions/{id}', 'App\Http\Controllers\QuestionsController@show')->name('questions.show');
+Route::get('/questions/{id}/edit', 'App\Http\Controllers\QuestionsController@edit')->name('questions.edit');
+Route::post('/questions/{id}/update', 'App\Http\Controllers\QuestionsController@update')->name('questions.update');
+Route::get('/questions/{id}/delete', 'App\Http\Controllers\QuestionsController@destroy')->name('questions.destroy');
