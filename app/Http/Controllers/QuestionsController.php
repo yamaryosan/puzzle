@@ -11,8 +11,17 @@ use App\Models\Genre;
 use App\Models\Pattern;
 use App\Models\Image;
 
+use App\Services\QuestionService;
+
 class QuestionsController extends Controller
 {
+    public function __construct(
+        QuestionService $questionService
+    )
+    {
+        $this->questionService = $questionService;
+    }
+
     /**
      * インデックス
      */
@@ -41,6 +50,7 @@ class QuestionsController extends Controller
     {
         $form = $request->all();
         unset($form['_token']);
+        $this->questionService->store($form);
         return redirect(route('questions.index'));
     }
 
