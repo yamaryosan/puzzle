@@ -23,6 +23,11 @@ class ImageService
             $constraint->aspectRatio(); // アスペクト比を維持
         });
 
+        // 一時ファイル用ディレクトリtmpを作成
+        if (!file_exists(public_path('storage/tmp'))) {
+            mkdir(public_path('storage/tmp'));
+        }
+
         // リサイズした画像を一時ファイルに保存
         $tmpPath = public_path('storage/tmp/') . $file->hashName();
         $newImage->save($tmpPath); // 画像を一時ファイルに保存
