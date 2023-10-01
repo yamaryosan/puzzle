@@ -22,3 +22,12 @@ Route::get('/questions/{id}', 'App\Http\Controllers\QuestionsController@show')->
 Route::get('/questions/{id}/edit', 'App\Http\Controllers\QuestionsController@edit')->name('questions.edit');
 Route::post('/questions/{id}/update', 'App\Http\Controllers\QuestionsController@update')->name('questions.update');
 Route::get('/questions/{id}/delete', 'App\Http\Controllers\QuestionsController@destroy')->name('questions.destroy');
+
+Route::resource('patterns', 'App\Http\Controllers\PatternsController');
+Route::get('/patterns', 'App\Http\Controllers\PatternsController@index')->name('patterns.index');
+Route::get('/patterns/create', 'App\Http\Controllers\PatternsController@create')->name('patterns.create');
+Route::post('/patterns/store', 'App\Http\Controllers\PatternsController@store')->name('patterns.store');
+Route::get('/patterns/{id}/edit', 'App\Http\Controllers\PatternsController@edit')->name('patterns.edit');
+Route::post('/patterns/{id}/update', 'App\Http\Controllers\PatternsController@update')->name('patterns.update');
+Route::get('/patterns/{id}', 'App\Http\Controllers\PatternsController@show')->name('patterns.show');
+Route::get('/patterns/{id}/delete', 'App\Http\Controllers\PatternsController@destroy')->name('patterns.destroy');
