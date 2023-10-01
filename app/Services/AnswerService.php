@@ -136,8 +136,7 @@ class AnswerService
     }
 
     /**
-     * 正答をアップロードする
-     *
+     * 正答を保存する
      * @param Question $question
      * @param array $form
      * @return void
@@ -152,5 +151,164 @@ class AnswerService
         foreach ($answerTexts as $index => $answerText) {
             $answer = $this->save($question, $answerText, $answerImages[$index] ?? []);
         }
+    }
+
+    /**
+     * 元々画像のなかった正答を再作成
+     * @param Question $question
+     * @param array $answerIds
+     * @param array $texts
+     * @param array $images
+     * @return void
+     */
+    public function restoreAnswersOriginallyNoImage(Question $question, array $answerIds, array $texts, array $images)
+    {
+        if (!isset($answerIds)) {
+            return;
+        }
+        # dd($answerIds, $texts, $images);
+        foreach ($answerIds as $answerIndex => $answerId) {
+            $answer = new Answer;
+            $answer->question_id = $question->id;
+            $answer->answer = $texts[$answerIndex];
+            $answer->save();
+            // 新規画像の保存
+            if (isset($images[$answerIndex])) {
+                $this->imageService->uploadForAnswer($answer, $images[$answerIndex]);
+            }
+        }
+    }
+
+    /**
+     * 元々画像のあった正答の本文を更新し、画像を紐付ける
+     * @param Question $question
+     * @param array $answerIds
+     * @param array $texts
+     * @param array $imageIds
+     * @param array $images
+     * @return void
+     */
+    public function restoreAnswersOriginallyWithImage(
+        Question $question,
+        array $answerIds,
+        array $texts,
+        array $imageIds,
+        array $images)
+    {
+        # dd($answerIds, $texts, $imageIds, $images);
+        if (empty($answerIds)) {
+            return;
+        }
+        $loopMax = max(count($imageIds[0]), count($images[0]));
+        foreach ($answerIds as $answerIndex => $answerId) {
+            $answer = new Answer;
+            $answer->question_id = $question->id;
+            $answer->answer = $texts[$answerIndex];
+            $answer->save();
+            // 新規画像の保存と既存画像の紐付け
+            for ($i = 0; $i<= $loopMax; $i++) {
+                // 新規画像の保存
+                if (isset($images[$answerIndex][$i])) {
+                    $this->imageService->uploadForAnswer($answer, $images[$answerIndex][$i]);
+                }
+                // 既存画像の紐付け
+                if (isset($imageIds[$answerIndex][$i])) {
+                    $this->imageService->reAttachForAnswer($answer, $imageIds[$answerIndex][$i]);
+                }
+            }
+        }
+    }
+
+    /**
+     * 一時的な既存画像なし正答を連想配列として作成
+     */
+    public function prepareTempAnswersOriginallyNoImage(array $form)
+    {
+        if (!isset($form['answer_ids_originally_no_image'])) {
+            return [];
+        }
+        $tempAnswers = [];
+        // 元々画像のなかった正答のIDを取得
+        $answerIds = $this->getAnswerIdsFromForm($form, 'answer_ids_originally_no_image');
+        // 元々画像のなかったヒント文のフィールドとその値を取得
+        $answerTexts = $this->getTextFromForm($form, 'answer_text_originally_no_image');
+        // 元々画像のなかったヒントの画像群を取得
+        $answerImages = $this->getImagesFromForm($form, 'answer_images_originally_no_image');
+        // 元々画像のなかったヒントのフィールドとその値を連想配列に格納
+        foreach ($answerIds as $index => $answerId) {
+            $tempAnswers[$answerId] = [
+                'answer_text' => $answerTexts[$index],
+                'answer_images' => $answerImages[$index] ?? [], // 画像がない場合は空配列
+            ];
+        }
+        return $tempAnswers;
+    }
+
+
+    /**
+     * 一時的な既存画像あり正答を連想配列として作成
+     */
+    public function prepareTempAnswersOriginallyWithImage(array $form)
+    {
+        if (!isset($form['answer_ids_originally_with_image'])) {
+            return [];
+        }
+        $tempAnswers = [];
+        // 元々画像のあった正答のIDを取得
+        $answerIds = $this->getAnswerIdsFromForm($form, 'answer_ids_originally_with_image');
+        // 元々画像のあった正答のフィールドとその値を取得
+        $answerTexts = $this->getTextFromForm($form, 'answer_text_originally_with_image');
+        // 元々画像のあった正答画像群のフィールドとその値(ID)を取得
+        $answerImageIds = $this->getImageIdsFromForm($form, 'answer_image_ids_originally_with_image');
+        // 元々画像のあった正答に追加された新規画像群のフィールドとその値を取得
+        $answerNewImages = $this->getImagesBetweenExistingImage($form, 'answer_new_images_originally_with_image');
+
+        // 元々画像のあったヒントのフィールドとその値を連想配列に格納
+        foreach ($answerIds as $answerIndex => $answerId) {
+            $tempAnswers[$answerId] = [
+                'answer_text' => $answerTexts[$answerIndex] ?? [],
+                'answer_image_ids' => $answerImageIds[$answerIndex] ?? [], // 画像がない場合は空配列
+                'answer_new_images' => $answerNewImages[$answerIndex] ?? [], // 画像がない場合は空配列
+            ];
+        }
+        return $tempAnswers;
+    }
+
+    /**
+     * 正答を更新する
+     * @param Question $question
+     * @param array $form
+     * @param int $questionId
+     * @return void
+     */
+    public function update(Question $question, array $form, string $questionId)
+    {
+        DB::transaction(function () use ($question, $form, $questionId) {
+            // 一時的な正答を連想配列として作成
+            $tempAnswersOriginallyNoImage = $this->prepareTempAnswersOriginallyNoImage($form);
+            $tempAnswersOriginallyWithImage = $this->prepareTempAnswersOriginallyWithImage($form);
+            // 既存の正答をいったん全て削除
+            Answer::where('question_id', $questionId)->delete();
+
+            // 既存画像のなかった正答の更新(再作成)
+            $this->restoreAnswersOriginallyNoImage(
+                $question,
+                array_keys($tempAnswersOriginallyNoImage),
+                array_column($tempAnswersOriginallyNoImage, 'answer_text'),
+                array_column($tempAnswersOriginallyNoImage, 'answer_images'),
+            );
+
+            // 既存画像のあった正答の更新(再作成)
+            $this->restoreAnswersOriginallyWithImage(
+                $question,
+                array_keys($tempAnswersOriginallyWithImage),
+                array_column($tempAnswersOriginallyWithImage, 'answer_text'),
+                array_column($tempAnswersOriginallyWithImage, 'answer_image_ids'),
+                array_column($tempAnswersOriginallyWithImage, 'answer_new_images'),
+            );
+
+            // 新規正答の保存
+            $this->store($question, $form);
+        });
     }
 }
