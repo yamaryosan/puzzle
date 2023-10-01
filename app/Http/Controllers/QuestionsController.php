@@ -99,9 +99,11 @@ class QuestionsController extends Controller
 
     /**
      * 問題削除処理用
+     * @param string $id
      */
     public function destroy(string $id)
     {
-
+        Question::find($id)->delete();
+        return redirect(route('questions.index'));
     }
 }
