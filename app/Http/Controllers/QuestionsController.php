@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\QuestionRequest;
 
 use App\Models\Question;
 use App\Models\Hint;
@@ -46,7 +47,7 @@ class QuestionsController extends Controller
     /**
      * 問題作成処理用
      */
-    public function store(Request $request)
+    public function store(QuestionRequest $request)
     {
         $form = $request->all();
         unset($form['_token']);
