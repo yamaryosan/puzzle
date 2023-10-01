@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Question;
+use App\Models\Hint;
+use App\Models\Answer;
+use App\Models\Genre;
+use App\Models\Pattern;
+use App\Models\Image;
 
 class QuestionsController extends Controller
 {
