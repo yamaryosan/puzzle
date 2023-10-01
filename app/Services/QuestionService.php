@@ -103,4 +103,46 @@ class QuestionService
         // 正答をDBに保存
         $this->answerService->store($question, $form);
     }
+
+    /**
+     * updateメソッド用
+     * @param Question $question
+     * @param array $form
+     * @param string $id
+     */
+    public function update(Question $question, array $form, string $id)
+    {
+        // 問題文の更新
+        $this->saveTitle($question, $form['title']);
+        $this->saveContent($question, $form['content']);
+        $question->save();
+
+        // 問題文用の画像の更新
+        $this->imageService->updateForQuestion(
+            $question,
+            $form['existing_question_image_ids'] ?? [],
+            $form['new_question_images'] ?? [],
+        );
+
+        // ジャンルの更新
+        $this->genreService->attach($question, $form['existing_genre_ids_checked'] ?? [], $form['new_genre_texts']);
+
+        // ヒントの更新
+        $this->hintService->update($question, $form, $id);
+
+        // パターンの更新
+        $question->patterns()->detach(); // 中間テーブルから削除
+        if (!isset($form['pattern_ids'])) {
+            $form['pattern_ids'] = [];
+        }
+        $patternIds = $form['pattern_ids'];
+        foreach ($patternIds as $patternId) {
+            $question->patterns()->attach($patternId);
+        }
+
+        // 正答の更新
+        $this->answerService->update($question, $form, $id);
+    }
+
+
 }
