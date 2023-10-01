@@ -63,7 +63,6 @@ class QuestionsController extends Controller
         // 表示に必要なデータを取得
         $question = Question::find($id);
         $questionImages = $question->images;
-        dd($questionImages);
         $genres = $question->genres;
         $hints = Hint::where('question_id', $id)->with('images')->get();
         $patterns = $question->patterns;
