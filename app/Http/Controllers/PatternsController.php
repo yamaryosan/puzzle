@@ -55,7 +55,7 @@ class PatternsController extends Controller
     public function show(string $id)
     {
         $pattern = Pattern::find($id);
-        $images = $patterns->images;
+        $images = $pattern->images;
         return view('patterns.show', compact('pattern', 'images'));
     }
 
