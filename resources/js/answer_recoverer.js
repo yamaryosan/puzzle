@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // コンテナ内をクリア
     container.innerHTML = '';
     oldAnswers.forEach(function(answer, counter) {
-
         // ブロックを作成
         const newFormBlock = document.createElement('div');
         newFormBlock.className = 'answer_block';
@@ -40,7 +39,5 @@ document.addEventListener('DOMContentLoaded', function() {
         // ブロックに追加
         newFormBlock.appendChild(textarea);
         newFormBlock.appendChild(dropArea);
-        // ブロックに追加
-        newFormBlock.appendChild(textarea);
     });
 });
