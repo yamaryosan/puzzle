@@ -46,12 +46,12 @@ document.addEventListener('DOMContentLoaded', function() {
         container.appendChild(newFormBlock);
         // テキストエリアを作成
         const textarea = document.createElement('textarea');
-        textarea.name = 'new_hint_text[]';
+        textarea.name = `new_hint_text[${counter + 1}]`;
         textarea.placeholder = '正答を入力';
         textarea.required = true;
         textarea.value = hint;
         // blockの画像アップロード部分を作成
-        const dropArea = createDropArea(counter);
+        const dropArea = createDropArea(counter + 1);
         // ブロックに追加
         newFormBlock.appendChild(textarea);
         newFormBlock.appendChild(dropArea);
