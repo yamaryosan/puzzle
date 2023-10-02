@@ -31,7 +31,9 @@ document.addEventListener('DOMContentLoaded', function() {
     container.innerHTML = '';
 
     // pタグを作成
-    const p = createP('ヒント');
+    const p = createP('正答');
+    // コンテナに追加
+    container.appendChild(p);
 
     oldAnswers.forEach(function(answer, counter) {
         // ブロックを作成
