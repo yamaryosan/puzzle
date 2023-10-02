@@ -11,6 +11,7 @@ function createTextarea(counter, removedAnswerTexts) {
     textarea.name = `new_answer_text[${counter}]`;
     textarea.required = true;
     textarea.value = removedAnswerTexts.pop() || ''; // 削除されたデータを復元
+    textarea.placeholder = '正答を入力';
     return textarea;
 }
 
