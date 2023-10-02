@@ -37,7 +37,6 @@ function addHintBlock(removedHintTexts, counter) {
     const newFormBlock = createNewBlock();
 
     // blockのテキストエリアを作成
-    counter++;
     const textarea = createTextarea(counter, removedHintTexts);
 
     // blockの画像アップロード部分を作成
@@ -96,17 +95,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // 削除されたデータを保存する配列
     let removedHintTexts = [];
     // ブロックをカウント
-    let blockCount = 0;
+    let blockCount = document.querySelectorAll('.hint_block').length;
 
     document.getElementById('add_hint').addEventListener('click', function() {
-        addHintBlock(removedHintTexts, blockCount);
         blockCount = document.querySelectorAll('.hint_block').length;
+        blockCount++;
+        addHintBlock(removedHintTexts, blockCount);
         console.log(blockCount);
     });
 
     document.getElementById('remove_hint').addEventListener('click', function() {
-        removeHintBlock(removedHintTexts);
         blockCount = document.querySelectorAll('.hint_block').length;
+        blockCount--;
+        removeHintBlock(removedHintTexts);
         console.log(blockCount);
     });
 });
