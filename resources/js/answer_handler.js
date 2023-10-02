@@ -93,15 +93,20 @@ function removeAnswerBlock(removedAnswerTexts) {
 document.addEventListener('DOMContentLoaded', function() {
     // 削除されたデータを保存する配列
     let removedAnswerTexts = [];
-    // 入力欄の数を数えるカウンタ
-    let answerCount = 0;
+    // ブロックをカウント
+    let blockCount = document.querySelectorAll('.answer_block').length;
 
     document.getElementById('add_answer').addEventListener('click', function() {
-        addAnswerBlock(removedAnswerTexts, answerCount);
-        answerCount++;
+        blockCount = document.querySelectorAll('.answer_block').length;
+        blockCount++;
+        addAnswerBlock(removedAnswerTexts, blockCount);
+        console.log(blockCount);
     });
 
     document.getElementById('remove_answer').addEventListener('click', function() {
+        blockCount = document.querySelectorAll('.answer_block').length;
+        blockCount--;
         removeAnswerBlock(removedAnswerTexts);
+        console.log(blockCount);
     });
 });
