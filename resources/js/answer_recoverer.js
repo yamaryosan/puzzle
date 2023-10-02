@@ -21,7 +21,9 @@ function createDropArea(counter) {
 // 入力し直しのための正答復元
 
 document.addEventListener('DOMContentLoaded', function() {
-    if (oldAnswers.length === 0) {
+    // 連想配列を配列に変換
+    const oldAnswersArray = Object.values(oldAnswers);
+    if (oldAnswersArray.length === 0) {
         return;
     }
 
@@ -35,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // コンテナに追加
     container.appendChild(p);
 
-    oldAnswers.forEach(function(answer, counter) {
+    oldAnswersArray.forEach(function(answer, counter) {
         // ブロックを作成
         const newFormBlock = document.createElement('div');
         newFormBlock.className = 'answer_block';
@@ -43,12 +45,12 @@ document.addEventListener('DOMContentLoaded', function() {
         container.appendChild(newFormBlock);
         // テキストエリアを作成
         const textarea = document.createElement('textarea');
-        textarea.name = 'new_answer_text[]';
+        textarea.name = `new_answer_text[${counter + 1}]`;
         textarea.placeholder = '正答を入力';
         textarea.required = true;
         textarea.value = answer;
         // blockの画像アップロード部分を作成
-        const dropArea = createDropArea(counter);
+        const dropArea = createDropArea(counter + 1);
         // ブロックに追加
         newFormBlock.appendChild(textarea);
         newFormBlock.appendChild(dropArea);
