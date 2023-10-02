@@ -6,7 +6,7 @@
 </head>
 <script>
     // 以前の入力内容(ヒント、正答)を復元
-    const oldHints = @json(old('hint_text', []));
+    const oldHints = @json(old('new_hint_text', []));
     const oldAnswers = @json(old('new_answer_text', []));
 </script>
 <form action="{{route('questions.store')}}" method="post" enctype="multipart/form-data">
