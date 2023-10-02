@@ -1,3 +1,10 @@
+// pタグを作成
+function createP(text) {
+    const p = document.createElement('p');
+    p.textContent = text;
+    return p;
+}
+
 // blockの画像アップロード部分を作成
 function createDropArea(counter) {
     const uniqueId = `file_element_answer_images[${counter}]`;
@@ -22,6 +29,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const container = document.querySelector('#answer_container');
     // コンテナ内をクリア
     container.innerHTML = '';
+
+    // pタグを作成
+    const p = createP('ヒント');
+
     oldAnswers.forEach(function(answer, counter) {
         // ブロックを作成
         const newFormBlock = document.createElement('div');
