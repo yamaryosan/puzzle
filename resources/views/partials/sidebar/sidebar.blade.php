@@ -4,3 +4,6 @@
     <li><a href="{{ route('patterns.index') }}">パターン一覧</a></li>
     <li><a href="{{ route('patterns.create') }}">パターン追加</a></li>
 </ul>
+
+<!-- ジャンル一覧 -->
+@include('partials.sidebar.genre_list')
