@@ -6,8 +6,8 @@
 </head>
 <script>
     // 以前の入力内容(ヒント、正答)を復元
-    const oldHints = @json(old('hints', []));
-    const oldAnswers = @json(old('answers', []));
+    const oldHints = @json(old('new_hint_text', []));
+    const oldAnswers = @json(old('new_answer_text', []));
 </script>
 
 <form action="{{ route('questions.update', $question->id) }}" method="post" enctype="multipart/form-data">
@@ -34,11 +34,10 @@
 
 @vite([
     'resources/js/genre_handler.js',
-    'resources/js/hint_recoverer.js',
+    'resources/js/newHintBlock.js',
     'resources/js/answer_recoverer.js',
     'resources/js/image_delete.js',
     'resources/js/hint_delete.js',
     'resources/js/answer_delete.js',
-    'resources/js/edit_page_hint_handler.js',
     'resources/js/edit_page_answer_handler.js',
     ])
