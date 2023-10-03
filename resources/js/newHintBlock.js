@@ -154,15 +154,15 @@ const hintBlockClassName = "new_hint_block";
 
     // 入力欄の追加
     document.getElementById('add_hint').addEventListener('click', function() {
-    blockCount = document.querySelectorAll(`.${hintBlockClassName}`).length;
-    hintBlock.counter = blockCount;
-    hintBlock.add();
+        blockCount = document.querySelectorAll(`.${hintBlockClassName}`).length;
+        hintBlock.counter = blockCount;
+        hintBlock.add();
     });
 
     // 入力欄の削除
     document.getElementById('remove_hint').addEventListener('click', function() {
-    blockCount = document.querySelectorAll(`.${hintBlockClassName}`).length;
-    hintBlock.counter = blockCount - 1;
-    hintBlock.remove();
+        blockCount = document.querySelectorAll(`.${hintBlockClassName}`).length;
+        hintBlock.counter = blockCount - 1;
+        hintBlock.remove();
     });
-  });
+});
