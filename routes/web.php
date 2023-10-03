@@ -31,3 +31,7 @@ Route::get('/patterns/{id}/edit', 'App\Http\Controllers\PatternsController@edit'
 Route::post('/patterns/{id}/update', 'App\Http\Controllers\PatternsController@update')->name('patterns.update');
 Route::get('/patterns/{id}', 'App\Http\Controllers\PatternsController@show')->name('patterns.show');
 Route::get('/patterns/{id}/delete', 'App\Http\Controllers\PatternsController@destroy')->name('patterns.destroy');
+
+Route::get('/genres/{id}', 'App\Http\Controllers\GenresController@show')->name('genres.show');
+Route::get('/genres/{id}/edit', 'App\Http\Controllers\GenresController@edit')->name('genres.edit');
+Route::put('/genres/{id}/update', 'App\Http\Controllers\GenresController@update')->name('genres.update');
