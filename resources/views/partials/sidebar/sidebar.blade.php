@@ -7,3 +7,7 @@
 
 <!-- ジャンル一覧 -->
 @include('partials.sidebar.genre_list')
+
+
+<!-- データ全削除 -->
+@include('partials.sidebar.delete_all')
