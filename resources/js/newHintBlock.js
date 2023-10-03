@@ -121,7 +121,7 @@ class HintBlock {
         // コンテナ内のブロックを削除
         this.container.innerHTML = '';
         // pタグを作成
-        const p = this.createP('ヒント');
+        const p = this.createP('新規ヒント');
         // コンテナに追加
         this.container.appendChild(p);
         // ヒントの数だけ入力欄を作成
