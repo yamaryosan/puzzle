@@ -22,12 +22,38 @@ class QuestionsController extends Controller
     }
 
     /**
-     * インデックス
+     * 検索語が空欄の場合リダイレクト
+     * @param string $searchWord
+     * @return void
+     */
+    public function redirectToPreviousPageIfEmpty(string $searchWord)
+    {
+        if(empty($searchWord)) {
+            return redirect()->back();
+        }
+    }
+
+    /**
+     * インデックスページ
+     * 検索機能付き
+     * @param Request $request
      */
     public function index(Request $request)
     {
-        $questions = Question::paginate(10);
-        return view('questions.index', compact('questions'));
+        if($request->has('search_word')) {
+            $searchWord = $request->input('search_word') ?? '';
+            // 検索語が空欄の場合はリダイレクト
+            $this->redirectToPreviousPageIfEmpty($searchWord);
+            // 検索語がある場合は検索結果を表示
+            $questions = Question::where('title', 'like', "%{$searchWord}%")
+                ->orWhere('content', 'like', "%{$searchWord}%")
+                ->paginate(10);
+            return view('questions.index', compact('questions', 'searchWord'));
+        } else {
+            // 検索語がない場合は全ての問題を表示
+            $questions = Question::paginate(10);
+            return view('questions.index', compact('questions'));
+        }
     }
 
     /**

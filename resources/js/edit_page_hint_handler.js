@@ -95,15 +95,20 @@ function removeHintBlock(removedHintTexts) {
 document.addEventListener('DOMContentLoaded', function() {
     // 削除されたデータを保存する配列
     let removedHintTexts = [];
-    // フォーム欄の数を数えるカウンタ
-    let hintCount = 0;
+    // ブロックをカウント
+    let blockCount = document.querySelectorAll('.hint_block').length;
 
     document.getElementById('add_hint').addEventListener('click', function() {
-        addHintBlock(removedHintTexts, hintCount);
-        hintCount++;
+        blockCount = document.querySelectorAll('.hint_block').length;
+        blockCount++;
+        addHintBlock(removedHintTexts, blockCount);
+        console.log(blockCount);
     });
 
     document.getElementById('remove_hint').addEventListener('click', function() {
+        blockCount = document.querySelectorAll('.hint_block').length;
+        blockCount--;
         removeHintBlock(removedHintTexts);
+        console.log(blockCount);
     });
 });
