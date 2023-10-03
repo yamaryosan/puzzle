@@ -19,6 +19,7 @@ export default defineConfig({
             'resources/js/answer_delete.js',
             'resources/js/edit_page_hint_handler.js',
             'resources/js/edit_page_answer_handler.js',
+            'resources/js/newHintBlock.js',
             ],
             refresh: true,
         }),
