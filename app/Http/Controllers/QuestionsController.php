@@ -141,4 +141,17 @@ class QuestionsController extends Controller
         Question::find($id)->delete();
         return redirect(route('questions.index'));
     }
+
+    /**
+     * データベース内の全ての問題を削除する
+     * @return void
+     */
+    public function deleteAll()
+    {
+        // 問題に紐づくヒント、正答、パターン、タグも削除
+        Question::query()->delete();
+        Genre::query()->delete();
+        Pattern::query()->delete();
+        return redirect(route('questions.index'));
+    }
 }
