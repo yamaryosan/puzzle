@@ -150,7 +150,6 @@ class HintBlock {
     blockCount = document.querySelectorAll('.hint_block').length;
     hintBlock.counter = blockCount;
     hintBlock.add();
-    console.log(blockCount);
     });
 
     // 入力欄の削除
@@ -158,6 +157,5 @@ class HintBlock {
     blockCount = document.querySelectorAll('.hint_block').length;
     hintBlock.counter = blockCount - 1;
     hintBlock.remove();
-    console.log(blockCount);
     });
   });
