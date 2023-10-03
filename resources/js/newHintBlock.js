@@ -15,7 +15,7 @@ class HintBlock {
         this.counter = counter;
         this.removedTexts = removedTexts;
         this.oldHints = oldHints;
-        this.container = document.getElementById('hint_container');
+        this.container = document.getElementById('new_hint_container');
     }
 
     /**
@@ -144,10 +144,10 @@ class HintBlock {
 const hintBlockClassName = "new_hint_block";
 
   document.addEventListener('DOMContentLoaded', function() {
-    let removedHintTexts = [];
+    let removedTexts = [];
     let blockCount = document.querySelectorAll(`.${hintBlockClassName}`).length;
 
-    const hintBlock = new HintBlock(blockCount, removedHintTexts, oldHints);
+    const hintBlock = new HintBlock(blockCount, removedTexts, oldHints);
 
     // 入力し直しのためのヒント復元
     hintBlock.restoreOldHints();
