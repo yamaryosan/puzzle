@@ -80,7 +80,8 @@ class HintBlock {
      */
     remove() {
         const lastFormBlock = this.container.lastElementChild;
-        if (!lastFormBlock || lastFormBlock.className !== 'hint_block') {
+        // ヒント入力欄がなければ何もしない
+        if (!(lastFormBlock && lastFormBlock.className === 'hint_block')) {
             return;
         }
 
@@ -113,7 +114,7 @@ class HintBlock {
             return;
         }
 
-        // コンテナ内をクリア
+        // コンテナ内のブロックを削除
         this.container.innerHTML = '';
         // pタグを作成
         const p = this.createP('ヒント');
