@@ -22,6 +22,7 @@ Route::get('/questions/{id}', 'App\Http\Controllers\QuestionsController@show')->
 Route::get('/questions/{id}/edit', 'App\Http\Controllers\QuestionsController@edit')->name('questions.edit');
 Route::post('/questions/{id}/update', 'App\Http\Controllers\QuestionsController@update')->name('questions.update');
 Route::get('/questions/{id}/delete', 'App\Http\Controllers\QuestionsController@destroy')->name('questions.destroy');
+Route::post('/questions/delete_all', 'App\Http\Controllers\QuestionsController@deleteAll')->name('questions.deleteAll');
 
 Route::resource('patterns', 'App\Http\Controllers\PatternsController');
 Route::get('/patterns', 'App\Http\Controllers\PatternsController@index')->name('patterns.index');
