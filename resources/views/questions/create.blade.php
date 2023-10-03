@@ -34,7 +34,6 @@
 @vite([
     'resources/js/answer_handler.js',
     'resources/js/genre_handler.js',
-    'resources/js/hint_handler.js',
-    'resources/js/hint_recoverer.js',
+    'resources/js/newHintBlock.js',
     'resources/js/answer_recoverer.js',
     ])
