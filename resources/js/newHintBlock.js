@@ -24,7 +24,7 @@ class HintBlock {
      */
     createNewBlock() {
         const newFormBlock = document.createElement('div');
-        newFormBlock.className = 'hint_block';
+        newFormBlock.className = hintBlockClassName;
         return newFormBlock;
     }
 
@@ -81,7 +81,7 @@ class HintBlock {
     remove() {
         const lastFormBlock = this.container.lastElementChild;
         // ヒント入力欄がなければ何もしない
-        if (!(lastFormBlock && lastFormBlock.className === 'hint_block')) {
+        if (!(lastFormBlock && lastFormBlock.className === hintBlockClassName)) {
             return;
         }
 
@@ -104,6 +104,10 @@ class HintBlock {
 
     /**
      * 入力やり直し前のヒントを復元
+     * ヒントの数だけ入力欄を作成する
+     *
+     * コンテナ内ブロックだけを削除しないのは、
+     * 入力やり直しの際に、画面が遷移して情報が消えてしまうため
      * @returns {void}
      */
     restoreOldHints() {
@@ -137,9 +141,11 @@ class HintBlock {
     };
 }
 
+const hintBlockClassName = "new_hint_block";
+
   document.addEventListener('DOMContentLoaded', function() {
     let removedHintTexts = [];
-    let blockCount = document.querySelectorAll('.hint_block').length;
+    let blockCount = document.querySelectorAll(`.${hintBlockClassName}`).length;
 
     const hintBlock = new HintBlock(blockCount, removedHintTexts, oldHints);
 
@@ -148,14 +154,14 @@ class HintBlock {
 
     // 入力欄の追加
     document.getElementById('add_hint').addEventListener('click', function() {
-    blockCount = document.querySelectorAll('.hint_block').length;
+    blockCount = document.querySelectorAll(`.${hintBlockClassName}`).length;
     hintBlock.counter = blockCount;
     hintBlock.add();
     });
 
     // 入力欄の削除
     document.getElementById('remove_hint').addEventListener('click', function() {
-    blockCount = document.querySelectorAll('.hint_block').length;
+    blockCount = document.querySelectorAll(`.${hintBlockClassName}`).length;
     hintBlock.counter = blockCount - 1;
     hintBlock.remove();
     });
