@@ -10,11 +10,24 @@ use App\Services\ImageService;
 
 class GenreService
 {
+    public function areNewGenreTextsEmpty(array $newGenreTexts)
+    {
+        foreach ($newGenreTexts as $newGenreText) {
+            if(!empty($newGenreText)){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public function attach(Question $question, array $existingGenreIdsChecked, array $newGenreTexts)
     {
         $question->genres()->detach(); // 中間テーブルから削除
-        if (empty($existingGenreIdsChecked) && empty($newGenreTexts)) {
-            return;
+
+        // 既存ジャンルも新規ジャンルも選択されていない場合は「ジャンルなし」を問題に紐づける
+        if (empty($existingGenreIdsChecked) && $this->areNewGenreTextsEmpty($newGenreTexts)) {
+            $genre = Genre::firstOrCreate(['genre' => 'ジャンルなし']); // 重複する場合は作成しない
+            $question->genres()->attach($genre->id); // 中間テーブルに保存
         }
 
         // 既存ジャンルを問題に紐づける

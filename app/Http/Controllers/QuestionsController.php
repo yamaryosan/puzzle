@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\QuestionRequest;
+// use App\Http\Requests\QuestionRequest; ジャンル未選択の場合のバリデーションだったが、現在は未使用
 
 use App\Models\Question;
 use App\Models\Hint;
@@ -70,8 +70,9 @@ class QuestionsController extends Controller
 
     /**
      * 問題作成処理用
+     * @param Request $request
      */
-    public function store(QuestionRequest $request)
+    public function store(Request $request)
     {
         $form = $request->all();
         unset($form['_token']);
@@ -144,10 +145,10 @@ class QuestionsController extends Controller
 
     /**
      * 問題編集処理用
-     * @param QuestionRequest $request
+     * @param Request $request
      * @param string $id
      */
-    public function update(QuestionRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
         $question = Question::find($id);
         $form = $request->all();
