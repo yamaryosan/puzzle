@@ -95,7 +95,7 @@ class QuestionService
         // 問題文用の画像をDBに保存
         $this->imageService->uploadForQuestion($question, $form['question_images'] ?? []);
         // ジャンルを問題文に紐付ける
-        $this->genreService->attach($question, $form['existing_genre_ids_checked'] ?? [], $form['new_genre_texts']);
+        $this->genreService->attach($question, $form['existing_genre_ids_checked'] ?? [], $form['new_genre_text'] ?? []);
         // ヒントをDBに保存
         $this->hintService->store($question, $form);
         // パターンを問題文に紐付ける
@@ -125,7 +125,7 @@ class QuestionService
         );
 
         // ジャンルの更新
-        $this->genreService->attach($question, $form['existing_genre_ids_checked'] ?? [], $form['new_genre_texts']);
+        $this->genreService->attach($question, $form['existing_genre_ids_checked'] ?? [], $form['new_genre_text'] ?? []);
 
         // ヒントの更新
         $this->hintService->update($question, $form, $id);

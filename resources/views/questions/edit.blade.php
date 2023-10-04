@@ -8,6 +8,7 @@
     // 以前の入力内容(ヒント、正答)を復元
     const oldHints = @json(old('new_hint_text', []));
     const oldAnswers = @json(old('new_answer_text', []));
+    const oldGenreText = @json(old('new_genre_text', []));
 </script>
 
 <form action="{{ route('questions.update', $question->id) }}" method="post" enctype="multipart/form-data">
@@ -33,9 +34,9 @@
 @endsection
 
 @vite([
-    'resources/js/genreHandler.js',
     'resources/js/newHintBlock.js',
     'resources/js/newAnswerBlock.js',
+    'resources/js/newGenreBlock.js',
     'resources/js/imageDelete.js',
     'resources/js/hintDelete.js',
     'resources/js/answerDelete.js',

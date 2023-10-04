@@ -5,9 +5,10 @@
     <link rel="stylesheet" href="{{ asset('css/image_drop_form.css') }}">
 </head>
 <script>
-    // 以前の入力内容(ヒント、正答)を復元
+    // 以前の入力内容(ヒント、正答、ジャンル)を復元
     const oldHints = @json(old('new_hint_text', []));
     const oldAnswers = @json(old('new_answer_text', []));
+    const oldGenreText = @json(old('new_genre_text', []));
 </script>
 <form action="{{route('questions.store')}}" method="post" enctype="multipart/form-data">
     @csrf
@@ -32,7 +33,7 @@
 @endsection
 
 @vite([
-    'resources/js/genreHandler.js',
     'resources/js/newHintBlock.js',
     'resources/js/newAnswerBlock.js',
+    'resources/js/newGenreBlock.js',
     ])

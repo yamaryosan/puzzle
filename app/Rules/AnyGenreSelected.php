@@ -16,7 +16,7 @@ class AnyGenreSelected implements ValidationRule
     {
         $request = request();
         $existingGenres = $request->input('existing_genre_ids_checked');
-        $newGenreTexts = $request->input('new_genre_texts');
+        $newGenreTexts = $request->input('new_genre_text');
         /**
          * バリデーションをスルーさせないために、
          * 新ジャンルテキストに入力が何もない場合、配列にnullを代入
