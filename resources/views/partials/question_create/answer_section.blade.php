@@ -1,6 +1,6 @@
-<div id="answer_container">
+<div id="new_answer_container">
     <p>正答</p>
-    <div class="answer_block">
+    <div class="new_answer_block">
         <textarea name="new_answer_text[]" placeholder="正答を入力" required></textarea>
         @include('partials.new_image_upload_part', ['field_name' => 'new_answer_images', 'index' => 0])
     </div>
