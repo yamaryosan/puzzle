@@ -32,7 +32,7 @@
 @endsection
 
 @vite([
-    'resources/js/genre_handler.js',
+    'resources/js/genreHandler.js',
     'resources/js/newHintBlock.js',
     'resources/js/newAnswerBlock.js',
     ])

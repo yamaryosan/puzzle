@@ -33,10 +33,10 @@
 @endsection
 
 @vite([
-    'resources/js/genre_handler.js',
+    'resources/js/genreHandler.js',
     'resources/js/newHintBlock.js',
     'resources/js/newAnswerBlock.js',
-    'resources/js/image_delete.js',
-    'resources/js/hint_delete.js',
-    'resources/js/answer_delete.js',
+    'resources/js/imageDelete.js',
+    'resources/js/hintDelete.js',
+    'resources/js/answerDelete.js',
     ])
