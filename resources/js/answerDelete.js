@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             // 正答の数が1つのときは削除できない
             const answerCount = document.querySelectorAll('.existing_answer_block').length;
-            if (answerCount <= 1) {
+            if (answerCount <= 0) {
                 return;
             }
 

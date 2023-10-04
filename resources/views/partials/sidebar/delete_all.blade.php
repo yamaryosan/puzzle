@@ -3,4 +3,4 @@
     <button type="button" class="btn" id="delete_all">データ全削除</button>
 </form>
 
-@vite(['resources/js/delete_all_alert.js'])
+@vite(['resources/js/deleteAllAlert.js'])
