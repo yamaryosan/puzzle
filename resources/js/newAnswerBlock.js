@@ -19,7 +19,7 @@ class AnswerBlock {
     }
 
     /**
-     * 新しい正答入力欄を作成
+     * 新しいブロックを作成
      * @returns {HTMLDivElement}
      */
     createNewBlock() {
@@ -102,6 +102,7 @@ class AnswerBlock {
             // 既存正答がある場合、新規正答入力欄は0個でも良い
             minFields = 0;
         }
+        // 残りの正答入力欄の数
         const remainingBlocks = this.container.querySelectorAll(`.${answerBlockClassName}`).length;
         if (remainingBlocks === minFields) {
             return;
@@ -189,9 +190,3 @@ const answerBlockClassName = "new_answer_block";
         answerBlock.remove();
     });
 });
-
-// 正答入力欄を復元したはいいが、
-// 「正答は少なくとも1つ必要」という仕様のため
-// 既存正答に一つ新規正答欄を追加してしまうと
-// その新規正答欄を削除できなくなる
-// そのため「既存正答がない場合は新規正答欄を追加する」という処理を追加する
